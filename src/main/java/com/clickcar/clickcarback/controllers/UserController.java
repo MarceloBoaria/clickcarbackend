@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserOutput create(@RequestBody UserInput user) {
+    public ResponseEntity<UserOutput> create(@RequestBody UserInput user) {
 
         User userToSave = new User();
 

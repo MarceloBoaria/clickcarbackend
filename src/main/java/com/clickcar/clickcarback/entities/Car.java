@@ -29,7 +29,5 @@ public class Car {
     private Photograph photograph;
     @Embedded
     private Details details;
-    @Embedded
-    private Interest interest;
     
 }

@@ -3,7 +3,6 @@ package com.clickcar.clickcarback.entities;
 import java.util.List;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,7 +34,5 @@ public class User {
     private Photograph photograph;
     @OneToMany
     private List<Car> cars;
-    @Embedded
-    private Interest interest;
     
 }
