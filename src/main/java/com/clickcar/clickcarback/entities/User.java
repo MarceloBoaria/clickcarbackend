@@ -28,7 +28,7 @@ public class User {
     private String password;
     private Boolean isAdmin;
 
-    @OneToOne
+    @OneToOne(optional = true)
     private Address address;
     @OneToOne(optional = true)
     private Photograph photograph;

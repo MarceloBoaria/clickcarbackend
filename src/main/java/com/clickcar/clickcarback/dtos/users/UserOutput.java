@@ -1,7 +1,5 @@
 package com.clickcar.clickcarback.dtos.users;
 
-import com.clickcar.clickcarback.entities.Address;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,5 +11,4 @@ public class UserOutput {
     private String email;
     private String cpf;
     private String phone;
-    private Address address;
 }

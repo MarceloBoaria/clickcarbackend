@@ -43,7 +43,6 @@ public class UserController {
         userToSave.setCpf(user.getCpf());
         userToSave.setPhone(user.getPhone());
         userToSave.setPassword(user.getPassword());
-        userToSave.setAddress(user.getAddress());
 
         User userSaved = repository.save(userToSave);
 
@@ -53,8 +52,7 @@ public class UserController {
             userSaved.getName(),
             userSaved.getEmail(),
             userSaved.getCpf(),
-            userSaved.getPhone(),
-            userSaved.getAddress());
+            userSaved.getPhone());
 
             return new ResponseEntity<>(output, HttpStatus.CREATED);
 
