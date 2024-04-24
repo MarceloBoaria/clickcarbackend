@@ -3,6 +3,8 @@ package com.clickcar.clickcarback.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,38 +15,51 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.clickcar.clickcarback.entities.Photograph;
-import com.clickcar.clickcarback.repositories.PhotographRepository;
+import com.clickcar.clickcarback.service.PhotographService;
 
 @RestController
 @RequestMapping("/photos")
 public class PhotographController {
 
     @Autowired
-    private PhotographRepository repository;
+    private PhotographService service;
 
     @GetMapping
-    public List<Photograph> list() {
-        return repository.findAll();
+    public ResponseEntity<List<Photograph>> list() {
+        List<Photograph> list = service.list();
+        return ResponseEntity.ok(list);
     }
 
     @PostMapping
-    public Photograph create(@RequestBody Photograph photograph) {
-        return repository.save(photograph);
+    public ResponseEntity<Photograph> create(@RequestBody Photograph photograph) {
+        Photograph output = service.create(photograph);
+        return new ResponseEntity<>(output, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}") // Entre chaves para indicar que é um Parâmetro Variável!
-    public Photograph read(@PathVariable Long id) {
-        return repository.findById(id).get();
+    public ResponseEntity<Photograph> read(@PathVariable Long id) {
+        Photograph photograph = service.read(id);
+        if(photograph == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(photograph);
     }
 
-    @PutMapping
-    public Photograph update(@RequestBody Photograph photograph) {
-        return repository.save(photograph);
+    @PutMapping("/{id}")
+    public ResponseEntity<Photograph> update(@PathVariable Long id, @RequestBody Photograph photograph) {
+        Photograph newPhotograph = service.update(id, photograph);
+        if(photograph == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(newPhotograph);
     }
 
+    @SuppressWarnings("rawtypes")
     @DeleteMapping("/{id}") // Entre chaves para indicar que é um Parâmetro Variável!
-    public void delete(@PathVariable Long id) {
-        repository.deleteById(id);
+    public ResponseEntity delete(@PathVariable Long id) {
+        service.delete(id);
+        // return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     /*

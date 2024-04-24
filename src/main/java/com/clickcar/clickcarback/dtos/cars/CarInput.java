@@ -2,6 +2,8 @@ package com.clickcar.clickcarback.dtos.cars;
 
 import java.time.LocalDate;
 
+import com.clickcar.clickcarback.entities.Details;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,5 +14,6 @@ public class CarInput {
     private String model;
     private LocalDate yearManufacture;
     private Float mileage;
+    private Details details;
     
 }

@@ -16,66 +16,49 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.clickcar.clickcarback.dtos.users.UserInput;
 import com.clickcar.clickcarback.dtos.users.UserOutput;
-import com.clickcar.clickcarback.entities.User;
-import com.clickcar.clickcarback.repositories.UserRepository;
+import com.clickcar.clickcarback.service.UserService;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @Autowired
-    private UserRepository repository;
+    private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<User>> list() {
-        List<User> list = repository.findAll();
-        // return new ResponseEntity<>(list, HttpStatus.OK);
+    public ResponseEntity<List<UserOutput>> list() {
+        List<UserOutput> list = service.list();
         return ResponseEntity.ok(list);
     }
 
     @PostMapping
     public ResponseEntity<UserOutput> create(@RequestBody UserInput user) {
-
-        User userToSave = new User();
-
-        userToSave.setName(user.getName());
-        userToSave.setEmail(user.getEmail());
-        userToSave.setCpf(user.getCpf());
-        userToSave.setPhone(user.getPhone());
-        userToSave.setPassword(user.getPassword());
-
-        User userSaved = repository.save(userToSave);
-
-        UserOutput output = new UserOutput(
-
-            userSaved.getId(),
-            userSaved.getName(),
-            userSaved.getEmail(),
-            userSaved.getCpf(),
-            userSaved.getPhone());
-
-            return new ResponseEntity<>(output, HttpStatus.CREATED);
-
+        UserOutput output = service.create(user);
+        return new ResponseEntity<>(output, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}") // Entre chaves para indicar que é um Parâmetro Variável!
-    public ResponseEntity<User> read(@PathVariable Long id) {
-        User user = repository.findById(id).get();
-        // return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<UserOutput> read(@PathVariable Long id) {
+        UserOutput user = service.read(id);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping
-    public ResponseEntity<User> update(@RequestBody User user) {
-        User userUpdated = repository.save(user);
-        // return new ResponseEntity<>(userUpdated, HttpStatus.OK);
-        return ResponseEntity.ok(userUpdated);
+    @PutMapping("/{id}")
+    public ResponseEntity<UserOutput> update(@PathVariable Long id, @RequestBody UserInput input) {
+        UserOutput output = service.update(id, input);
+        if(output == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(output);
     }
 
-    @SuppressWarnings("rawtypes") // Para fazer o compilador não emitir warnings.
+    @SuppressWarnings("rawtypes")
     @DeleteMapping("/{id}") // Entre chaves para indicar que é um Parâmetro Variável!
     public ResponseEntity delete(@PathVariable Long id) {
-        repository.deleteById(id);
+        service.delete(id);
         // return new ResponseEntity(HttpStatus.NO_CONTENT);
         return ResponseEntity.noContent().build();
     }
