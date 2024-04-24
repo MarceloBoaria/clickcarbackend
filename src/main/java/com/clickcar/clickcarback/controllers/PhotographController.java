@@ -48,7 +48,7 @@ public class PhotographController {
     @PutMapping("/{id}")
     public ResponseEntity<Photograph> update(@PathVariable Long id, @RequestBody Photograph photograph) {
         Photograph newPhotograph = service.update(id, photograph);
-        if(photograph == null) {
+        if(newPhotograph == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(newPhotograph);

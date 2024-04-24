@@ -22,12 +22,8 @@ public class PhotographService {
     }
 
     public List<Photograph> list() {
-        // [photograph1, photograph2, photograph3].map(photograph -> convertPhotographToOutput(photograph));
         return repository
-        .findAll()
-        .stream()
-        .map(photograph -> (photograph))
-        .toList(); // DÚVIDA PARA SABER SE VAMOS BUSCAR TODAS AS FOTOGRAFIAS SALVAS, OU SE ISSO NÃO É NECESSÁRIO <---|
+        .findAll(); // DÚVIDA PARA SABER SE VAMOS BUSCAR TODAS AS FOTOGRAFIAS SALVAS, OU SE ISSO NÃO É NECESSÁRIO <---|
     }
 
     public Photograph read(Long id) {
