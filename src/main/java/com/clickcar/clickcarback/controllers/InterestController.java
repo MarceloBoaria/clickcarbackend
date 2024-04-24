@@ -9,49 +9,31 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.clickcar.clickcarback.entities.Photograph;
-import com.clickcar.clickcarback.service.PhotographService;
+import com.clickcar.clickcarback.entities.Interest;
+import com.clickcar.clickcarback.service.InterestService;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
-@RequestMapping("/photos")
-public class PhotographController {
+@RequestMapping("/interests")
+public class InterestController {
 
     @Autowired
-    private PhotographService service;
+    private InterestService service;
 
     @GetMapping
-    public ResponseEntity<List<Photograph>> list() {
-        List<Photograph> list = service.list();
+    public ResponseEntity<List<Interest>> list() {
+        List<Interest> list = service.list();
         return ResponseEntity.ok(list);
     }
 
     @PostMapping
-    public ResponseEntity<Photograph> create(@RequestBody Photograph photograph) {
-        Photograph newPhotograph = service.create(photograph);
-        return new ResponseEntity<>(newPhotograph, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{id}") // Entre chaves para indicar que é um Parâmetro Variável!
-    public ResponseEntity<Photograph> read(@PathVariable Long id) {
-        Photograph photograph = service.read(id);
-        if(photograph == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(photograph);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Photograph> update(@PathVariable Long id, @RequestBody Photograph photograph) {
-        Photograph newPhotograph = service.update(id, photograph);
-        if(newPhotograph == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(newPhotograph);
+    public ResponseEntity<Interest> create(@RequestBody Interest interest) {
+        Interest output = service.create(interest);
+        return new ResponseEntity<>(output, HttpStatus.CREATED);
     }
 
     @SuppressWarnings("rawtypes")
