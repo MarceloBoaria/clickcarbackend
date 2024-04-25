@@ -32,8 +32,8 @@ public class InterestController {
 
     @PostMapping
     public ResponseEntity<Interest> create(@RequestBody Interest interest) {
-        Interest output = service.create(interest);
-        return new ResponseEntity<>(output, HttpStatus.CREATED);
+        Interest newInterest = service.create(interest);
+        return new ResponseEntity<>(newInterest, HttpStatus.CREATED);
     }
 
     @SuppressWarnings("rawtypes")

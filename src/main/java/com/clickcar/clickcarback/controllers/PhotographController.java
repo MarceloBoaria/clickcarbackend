@@ -47,11 +47,11 @@ public class PhotographController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Photograph> update(@PathVariable Long id, @RequestBody Photograph photograph) {
-        Photograph newPhotograph = service.update(id, photograph);
-        if(newPhotograph == null) {
+        Photograph editPhotograph = service.update(id, photograph);
+        if(editPhotograph == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(newPhotograph);
+        return ResponseEntity.ok(editPhotograph);
     }
 
     @SuppressWarnings("rawtypes")

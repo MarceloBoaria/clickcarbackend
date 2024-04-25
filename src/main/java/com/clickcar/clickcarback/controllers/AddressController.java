@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.clickcar.clickcarback.dtos.adresses.AddressInput;
-import com.clickcar.clickcarback.dtos.adresses.AddressOutput;
+import com.clickcar.clickcarback.entities.Address;
 import com.clickcar.clickcarback.service.AddressService;
 
 @RestController
@@ -26,20 +25,20 @@ public class AddressController {
     private AddressService service;
 
     @GetMapping
-    public ResponseEntity<List<AddressOutput>> list() {
-        List<AddressOutput> list = service.list();
+    public ResponseEntity<List<Address>> list() {
+        List<Address> list = service.list();
         return ResponseEntity.ok(list);
     }
 
     @PostMapping
-    public ResponseEntity<AddressOutput> create(@RequestBody AddressInput address) {
-        AddressOutput output = service.create(address);
-        return new ResponseEntity<>(output, HttpStatus.CREATED);
+    public ResponseEntity<Address> create(@RequestBody Address address) {
+        Address newAddress = service.create(address);
+        return new ResponseEntity<>(newAddress, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}") // Entre chaves para indicar que é um Parâmetro Variável!
-    public ResponseEntity<AddressOutput> read(@PathVariable Long id) {
-        AddressOutput address = service.read(id);
+    public ResponseEntity<Address> read(@PathVariable Long id) {
+        Address address = service.read(id);
         if(address == null){
             return ResponseEntity.notFound().build();
         }
@@ -47,12 +46,12 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AddressOutput> update(@PathVariable Long id, @RequestBody AddressInput input) {
-        AddressOutput output = service.update(id, input);
-        if(output == null) {
+    public ResponseEntity<Address> update(@PathVariable Long id, @RequestBody Address address) {
+        Address editAddress = service.update(id, address);
+        if(editAddress == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(output);
+        return ResponseEntity.ok(editAddress);
     }
 
     @SuppressWarnings("rawtypes")
