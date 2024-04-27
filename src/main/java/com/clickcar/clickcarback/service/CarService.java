@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.clickcar.clickcarback.dtos.cars.CarInput;
 import com.clickcar.clickcarback.dtos.cars.CarOutput;
 import com.clickcar.clickcarback.entities.Car;
-import com.clickcar.clickcarback.entities.User;
 import com.clickcar.clickcarback.repositories.CarRepository;
 
 @Service
