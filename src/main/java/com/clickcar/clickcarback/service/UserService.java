@@ -3,6 +3,10 @@ package com.clickcar.clickcarback.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +28,16 @@ public class UserService {
         return convertUserToOutput(user);
     }
 
-    public List<UserOutput> list() {
-        // [user1, user2, user3].map(user -> convertUserToOutput(user));
+    public List<UserOutput> list(Pageable page, User userExample) {
+        ExampleMatcher matcher = ExampleMatcher
+        .matchingAny()
+        .withIgnoreCase()
+        .withStringMatcher(StringMatcher.CONTAINING);
+
+        Example<User> example = Example.of(userExample, matcher);
+
         return repository
-        .findAll()
+        .findAll(example, page)
         .stream()
         .map(user -> convertUserToOutput(user))
         .toList();

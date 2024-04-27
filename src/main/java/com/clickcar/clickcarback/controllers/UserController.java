@@ -3,8 +3,10 @@ package com.clickcar.clickcarback.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,23 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.clickcar.clickcarback.dtos.users.UserInput;
 import com.clickcar.clickcarback.dtos.users.UserOutput;
+import com.clickcar.clickcarback.entities.User;
 import com.clickcar.clickcarback.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
+@Validated
 public class UserController {
 
     @Autowired
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<UserOutput>> list() {
-        List<UserOutput> list = service.list();
+    public ResponseEntity<List<UserOutput>> list(Pageable page, User example) {
+        List<UserOutput> list = service.list(page, example);
         return ResponseEntity.ok(list);
     }
 
     @PostMapping
-    public ResponseEntity<UserOutput> create(@RequestBody UserInput user) {
+    public ResponseEntity<UserOutput> create(@Valid @RequestBody UserInput user) {
         UserOutput output = service.create(user);
         return new ResponseEntity<>(output, HttpStatus.CREATED);
     }
@@ -47,7 +53,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserOutput> update(@PathVariable Long id, @RequestBody UserInput input) {
+    public ResponseEntity<UserOutput> update(@PathVariable Long id, @Valid @RequestBody UserInput input) {
         UserOutput output = service.update(id, input);
         if(output == null) {
             return ResponseEntity.notFound().build();

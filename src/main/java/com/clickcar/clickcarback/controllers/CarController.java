@@ -3,8 +3,10 @@ package com.clickcar.clickcarback.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,23 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.clickcar.clickcarback.dtos.cars.CarInput;
 import com.clickcar.clickcarback.dtos.cars.CarOutput;
+import com.clickcar.clickcarback.entities.Car;
 import com.clickcar.clickcarback.service.CarService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/cars")
+@Validated
 public class CarController {
 
     @Autowired
     private CarService service;
 
     @GetMapping
-    public ResponseEntity<List<CarOutput>> list() {
-        List<CarOutput> list = service.list();
+    public ResponseEntity<List<CarOutput>> list(Pageable page, Car example) {
+        List<CarOutput> list = service.list(page, example);
         return ResponseEntity.ok(list);
     }
 
     @PostMapping
-    public ResponseEntity<CarOutput> create(@RequestBody CarInput car) {
+    public ResponseEntity<CarOutput> create(@Valid @RequestBody CarInput car) {
         CarOutput output = service.create(car);
         return new ResponseEntity<>(output, HttpStatus.CREATED);
     }
@@ -47,7 +53,7 @@ public class CarController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CarOutput> update(@PathVariable Long id, @RequestBody CarInput input) {
+    public ResponseEntity<CarOutput> update(@PathVariable Long id, @Valid @RequestBody CarInput input) {
         CarOutput output = service.update(id, input);
         if(output == null) {
             return ResponseEntity.notFound().build();
