@@ -3,6 +3,10 @@ package com.clickcar.clickcarback.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.clickcar.clickcarback.entities.Photograph;
@@ -21,9 +25,16 @@ public class PhotographService {
         return repository.save(photograph);
     }
 
-    public List<Photograph> list() {
+    public List<Photograph> list(Pageable page, Photograph photographExample) {
+        ExampleMatcher matcher = ExampleMatcher
+        .matchingAny()
+        .withIgnoreCase()
+        .withStringMatcher(StringMatcher.CONTAINING);
+
+        Example<Photograph> example = Example.of(photographExample, matcher);
+
         return repository
-        .findAll(); // DÚVIDA PARA SABER SE VAMOS BUSCAR TODAS AS FOTOGRAFIAS SALVAS, OU SE ISSO NÃO É NECESSÁRIO <---|
+        .findAll(example, page).toList();
     }
 
     public Photograph read(Long id) {

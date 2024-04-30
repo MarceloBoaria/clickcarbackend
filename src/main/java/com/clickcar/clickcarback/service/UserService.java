@@ -2,6 +2,7 @@ package com.clickcar.clickcarback.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -67,14 +68,8 @@ public class UserService {
 
     private User convertInputToUser(UserInput input) {
 
-        User user = new User();
-
-        user.setName(user.getName());
-        user.setEmail(user.getEmail());
-        user.setCpf(user.getCpf());
-        user.setPhone(user.getPhone());
-        user.setPassword(user.getPassword());
-        return user;
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(input, User.class);
 
     }
 
@@ -84,14 +79,8 @@ public class UserService {
             return null;
         }
 
-        UserOutput output = new UserOutput(
-            
-            user.getId(),
-            user.getName(),
-            user.getEmail(),
-            user.getCpf(),
-            user.getPhone());
-            return output;
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(user, UserOutput.class);
 
     }
     

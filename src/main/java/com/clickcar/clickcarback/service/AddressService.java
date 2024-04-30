@@ -3,6 +3,10 @@ package com.clickcar.clickcarback.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +24,16 @@ public class AddressService {
         return repository.save(address);
     }
 
-    public List<Address> list() {
-        return repository.findAll();
+    public List<Address> list(Pageable page, Address addressExample) {
+        ExampleMatcher matcher = ExampleMatcher
+        .matchingAny()
+        .withIgnoreCase()
+        .withStringMatcher(StringMatcher.CONTAINING);
+
+        Example<Address> example = Example.of(addressExample, matcher);
+
+        return repository
+        .findAll(example, page).toList();
     }
 
     public Address read(Long id) {

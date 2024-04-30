@@ -3,6 +3,7 @@ package com.clickcar.clickcarback.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,8 +26,8 @@ public class PhotographController {
     private PhotographService service;
 
     @GetMapping
-    public ResponseEntity<List<Photograph>> list() {
-        List<Photograph> list = service.list();
+    public ResponseEntity<List<Photograph>> list(Pageable page, Photograph example) {
+        List<Photograph> list = service.list(page, example);
         return ResponseEntity.ok(list);
     }
 

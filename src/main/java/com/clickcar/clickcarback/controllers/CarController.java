@@ -43,7 +43,7 @@ public class CarController {
         return new ResponseEntity<>(output, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}") // Entre chaves para indicar que é um Parâmetro Variável!
+    @GetMapping("/{id}")
     public ResponseEntity<CarOutput> read(@PathVariable Long id) {
         CarOutput car = service.read(id);
         if(car == null){

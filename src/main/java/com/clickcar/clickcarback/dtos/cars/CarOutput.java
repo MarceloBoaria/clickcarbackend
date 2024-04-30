@@ -6,8 +6,9 @@ import com.clickcar.clickcarback.entities.Details;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data @AllArgsConstructor
+@Data @AllArgsConstructor @NoArgsConstructor
 public class CarOutput {
 
     private Long id;

@@ -3,6 +3,7 @@ package com.clickcar.clickcarback.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,8 +26,8 @@ public class AddressController {
     private AddressService service;
 
     @GetMapping
-    public ResponseEntity<List<Address>> list() {
-        List<Address> list = service.list();
+    public ResponseEntity<List<Address>> list(Pageable page, Address example) {
+        List<Address> list = service.list(page, example);
         return ResponseEntity.ok(list);
     }
 

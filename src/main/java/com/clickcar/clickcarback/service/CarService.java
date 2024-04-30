@@ -2,6 +2,7 @@ package com.clickcar.clickcarback.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -67,14 +68,8 @@ public class CarService {
 
     private Car convertInputToCar(CarInput input) {
 
-        Car car = new Car();
-
-        car.setBrand(car.getBrand());
-        car.setModel(car.getModel());
-        car.setYearManufacture(car.getYearManufacture());
-        car.setMileage(car.getMileage());
-        car.setDetails(car.getDetails());
-        return car;
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(input, Car.class);
 
     }
 
@@ -84,15 +79,8 @@ public class CarService {
             return null;
         }
 
-        CarOutput output = new CarOutput(
-            
-            car.getId(),
-            car.getBrand(),
-            car.getModel(),
-            car.getYearManufacture(),
-            car.getMileage(),
-            car.getDetails());
-            return output;
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(car, CarOutput.class);
 
     }
     

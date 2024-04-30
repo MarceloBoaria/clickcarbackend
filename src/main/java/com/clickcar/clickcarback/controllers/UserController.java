@@ -43,7 +43,7 @@ public class UserController {
         return new ResponseEntity<>(output, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}") // Entre chaves para indicar que é um Parâmetro Variável!
+    @GetMapping("/{id}")
     public ResponseEntity<UserOutput> read(@PathVariable Long id) {
         UserOutput user = service.read(id);
         if(user == null){
