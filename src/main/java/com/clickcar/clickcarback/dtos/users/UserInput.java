@@ -16,7 +16,9 @@ public class UserInput {
     private String name;
     @NotNull @Email
     private String email;
+    @NotNull
     @Size(min = 11)
+    @Size(max = 11)
     private String cpf;
     @NotNull
     private String phone;
