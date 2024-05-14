@@ -19,8 +19,8 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String brand;
     private String model;
+    private String brand;
     private LocalDate yearManufacture;
     private Float mileage;
     private Boolean sold;

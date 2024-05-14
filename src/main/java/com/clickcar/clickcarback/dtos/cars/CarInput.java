@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 public class CarInput {
 
     @NotBlank
-    private String brand;
-    @NotNull
     private String model;
+    @NotNull
+    private String brand;
     @NotNull
     private LocalDate yearManufacture;
     @NotNull

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.clickcar.clickcarback.entities.Car;
 
 public interface CarRepository extends JpaRepository<Car, Long> {
-    List<Car> findByBrandAndModel(String brand, String model);
+    List<Car> findByModelAndBrand(String model, String brand);
 }

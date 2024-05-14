@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 public class CarOutput {
 
     private Long id;
-    private String brand;
     private String model;
+    private String brand;
     private LocalDate yearManufacture;
     private Float mileage;
     private Details details;
