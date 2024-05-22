@@ -1,7 +1,5 @@
 package com.clickcar.clickcarback.entities;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +19,7 @@ public class Car {
     private Long id;
     private String model;
     private String brand;
-    private LocalDate yearManufacture;
+    private Integer yearManufacture;
     private Float mileage;
     private Boolean sold;
 

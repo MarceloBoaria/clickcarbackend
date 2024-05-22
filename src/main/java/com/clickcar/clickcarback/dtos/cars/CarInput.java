@@ -1,7 +1,5 @@
 package com.clickcar.clickcarback.dtos.cars;
 
-import java.time.LocalDate;
-
 import com.clickcar.clickcarback.entities.Details;
 
 import jakarta.validation.constraints.NotBlank;
@@ -18,7 +16,7 @@ public class CarInput {
     @NotNull
     private String brand;
     @NotNull
-    private LocalDate yearManufacture;
+    private Integer yearManufacture;
     @NotNull
     private Float mileage;
     private Details details;

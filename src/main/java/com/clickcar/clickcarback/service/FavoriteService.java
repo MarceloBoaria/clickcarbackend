@@ -12,53 +12,53 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.clickcar.clickcarback.dtos.interest.InterestInput;
-import com.clickcar.clickcarback.dtos.interest.InterestOutput;
+import com.clickcar.clickcarback.dtos.favorits.FavoriteInput;
+import com.clickcar.clickcarback.dtos.favorits.FavoriteOutput;
 import com.clickcar.clickcarback.entities.Car;
-import com.clickcar.clickcarback.entities.Interest;
+import com.clickcar.clickcarback.entities.Favorite;
 import com.clickcar.clickcarback.entities.User;
 import com.clickcar.clickcarback.repositories.CarRepository;
-import com.clickcar.clickcarback.repositories.InterestRepository;
+import com.clickcar.clickcarback.repositories.FavoriteRepository;
 import com.clickcar.clickcarback.repositories.UserRepository;
 
 @Service
-public class InterestService {
+public class FavoriteService {
 
     @Autowired
-    private InterestRepository repository;
+    private FavoriteRepository repository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private CarRepository carRepository;
 
     @Transactional
-    public InterestOutput create(InterestInput input) {
+    public FavoriteOutput create(FavoriteInput input) {
 
         Long userId = input.getUserId();
         Long carId = input.getCarId();
         
         if (userRepository.existsById(userId) && carRepository.existsById(carId)) {
-            Interest interest = convertInputToInterest(input);
-            interest = repository.save(interest);
-            return convertInterestToOutput(interest);
+            Favorite favorite = convertInputToFavorite(input);
+            favorite = repository.save(favorite);
+            return convertFavoriteToOutput(favorite);
 
         } else {
             return null;
         }
     }
 
-    public List<InterestOutput> list(Pageable page, Interest interestExample) {
+    public List<FavoriteOutput> list(Pageable page, Favorite favoriteExample) {
         ExampleMatcher matcher = ExampleMatcher
         .matchingAny()
         .withIgnoreCase()
         .withStringMatcher(StringMatcher.CONTAINING);
 
-        Example<Interest> example = Example.of(interestExample, matcher);
+        Example<Favorite> example = Example.of(favoriteExample, matcher);
 
         return repository
         .findAll(example, page)
         .stream()
-        .map(interest -> convertInterestToOutput(interest))
+        .map(favorite -> convertFavoriteToOutput(favorite))
         .toList();
     }
 
@@ -67,32 +67,32 @@ public class InterestService {
         repository.deleteById(id);
     }
 
-    private Interest convertInputToInterest(InterestInput input) {
+    private Favorite convertInputToFavorite(FavoriteInput input) {
 
         Long userId = input.getUserId();
         Long carId = input.getCarId();
 
-        Interest interest = new Interest();
+        Favorite favorite = new Favorite();
 
         User user = userRepository.findById(userId).get();
-        interest.setUser(user);
+        favorite.setUser(user);
 
         Car car = carRepository.findById(carId).get();
-        interest.setCar(car);
+        favorite.setCar(car);
 
-        interest.setDateOfInterest(LocalDate.now());
+        favorite.setFavoriteDate(LocalDate.now());
 
-        return interest;
+        return favorite;
     }
 
-    private InterestOutput convertInterestToOutput(Interest interest) {
+    private FavoriteOutput convertFavoriteToOutput(Favorite favorite) {
 
-        if (interest == null) {
+        if (favorite == null) {
             return null;
         }
 
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(interest, InterestOutput.class);
+        return modelMapper.map(favorite, FavoriteOutput.class);
 
     }
 

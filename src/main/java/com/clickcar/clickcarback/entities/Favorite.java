@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 @Entity
-public class Interest {
+public class Favorite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate dateOfInterest;
+    private LocalDate FavoriteDate;
 
     @OneToOne
     private User user;

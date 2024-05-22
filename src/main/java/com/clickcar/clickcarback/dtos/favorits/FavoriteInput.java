@@ -1,4 +1,4 @@
-package com.clickcar.clickcarback.dtos.interest;
+package com.clickcar.clickcarback.dtos.favorits;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor
-public class InterestInput {
+public class FavoriteInput {
 
     @NotNull
     private Long userId;

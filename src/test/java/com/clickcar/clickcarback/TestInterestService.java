@@ -4,16 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import com.clickcar.clickcarback.repositories.InterestRepository;
-import com.clickcar.clickcarback.service.InterestService;
+import com.clickcar.clickcarback.repositories.FavoriteRepository;
+import com.clickcar.clickcarback.service.FavoriteService;
 
 public class TestInterestService {
 
     @Mock
-    InterestRepository interestRepository;
+    FavoriteRepository interestRepository;
 
     @InjectMocks
-    InterestService interestService;
+    FavoriteService interestService;
 
     @Test
     public void testPurchase() {

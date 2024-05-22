@@ -1,4 +1,4 @@
-package com.clickcar.clickcarback.dtos.interest;
+package com.clickcar.clickcarback.dtos.favorits;
 
 import java.time.LocalDate;
 
@@ -10,10 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor
-public class InterestOutput {
+public class FavoriteOutput {
 
     private Long id;
-    private LocalDate dateOfInterest;
+    private LocalDate FavoriteDate;
     private User user;
     private Car car;
     
