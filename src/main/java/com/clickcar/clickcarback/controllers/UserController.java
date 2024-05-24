@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clickcar.clickcarback.dtos.cars.CarOutput;
 import com.clickcar.clickcarback.dtos.users.UserInput;
 import com.clickcar.clickcarback.dtos.users.UserOutput;
 import com.clickcar.clickcarback.entities.User;
@@ -36,6 +37,12 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserOutput>> list(Pageable page, User example) {
         List<UserOutput> list = service.list(page, example);
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/{id}/favorits")
+    public ResponseEntity<List<CarOutput>> list(@PathVariable Long id) {
+        var list = service.listCar(id);
         return ResponseEntity.ok(list);
     }
 

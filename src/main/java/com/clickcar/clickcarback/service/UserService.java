@@ -11,6 +11,7 @@ import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.clickcar.clickcarback.dtos.cars.CarOutput;
 import com.clickcar.clickcarback.dtos.users.UserInput;
 import com.clickcar.clickcarback.dtos.users.UserOutput;
 import com.clickcar.clickcarback.entities.User;
@@ -18,6 +19,9 @@ import com.clickcar.clickcarback.repositories.UserRepository;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private CarService carService;
 
     @Autowired
     private UserRepository repository;
@@ -29,19 +33,27 @@ public class UserService {
         return convertUserToOutput(user);
     }
 
+    public List<CarOutput> listCar(Long id) {
+        User user = repository.findById(id).orElse(null);
+        return user.getFavorits()
+                .stream()
+                .map(car -> carService.convertCarToOutput(car))
+                .toList();
+    }
+
     public List<UserOutput> list(Pageable page, User userExample) {
         ExampleMatcher matcher = ExampleMatcher
-        .matchingAny()
-        .withIgnoreCase()
-        .withStringMatcher(StringMatcher.CONTAINING);
+                .matchingAny()
+                .withIgnoreCase()
+                .withStringMatcher(StringMatcher.CONTAINING);
 
         Example<User> example = Example.of(userExample, matcher);
 
         return repository
-        .findAll(example, page)
-        .stream()
-        .map(user -> convertUserToOutput(user))
-        .toList();
+                .findAll(example, page)
+                .stream()
+                .map(user -> convertUserToOutput(user))
+                .toList();
     }
 
     public UserOutput read(Long id) {
@@ -56,7 +68,7 @@ public class UserService {
 
     @Transactional
     public UserOutput update(Long id, UserInput input) {
-        if(repository.existsById(id)) {
+        if (repository.existsById(id)) {
             User user = convertInputToUser(input);
             user.setId(id);
             user = repository.save(user);
@@ -83,5 +95,5 @@ public class UserService {
         return modelMapper.map(user, UserOutput.class);
 
     }
-    
+
 }

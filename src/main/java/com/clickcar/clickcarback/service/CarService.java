@@ -73,14 +73,16 @@ public class CarService {
 
     }
 
-    private CarOutput convertCarToOutput(Car car) {
+    public CarOutput convertCarToOutput(Car car) {
 
         if (car == null) {
             return null;
         }
 
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(car, CarOutput.class);
+        var carMapped = modelMapper.map(car, CarOutput.class);
+        carMapped.setFavoritsNumber(car.getUsersFavorits().size());
+        return carMapped;
 
     }
     

@@ -1,7 +1,5 @@
 package com.clickcar.clickcarback.dtos.cars;
 
-import com.clickcar.clickcarback.entities.Details;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -19,6 +17,31 @@ public class CarInput {
     private Integer yearManufacture;
     @NotNull
     private Float mileage;
-    private Details details;
+    @NotNull
+    private Integer doors;
+    @NotNull
+    private Boolean eletricGlass;
+    @NotNull
+    private Boolean alarm;
+    @NotNull
+    private Boolean absBrake;
+    @NotNull
+    private Boolean sunroof;
+    @NotNull
+    private Float price;
+    @NotNull
+    private Boolean eletricLock;
+    @NotNull
+    private Boolean airbag;
+    @NotNull
+    private Boolean airConditioning;
+    @NotNull
+    private String color;
+    @NotNull
+    private String direction;
+    @NotNull
+    private String transmission;
+    @NotNull
+    private String category;
     
 }
