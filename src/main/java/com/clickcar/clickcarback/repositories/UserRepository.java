@@ -9,4 +9,5 @@ import com.clickcar.clickcarback.entities.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     List<Car> findByNameAndCpf(String name, String cpf);
+    User findByCpf(String cpf);
 }

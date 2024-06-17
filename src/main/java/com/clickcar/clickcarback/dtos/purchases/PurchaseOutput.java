@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 public class PurchaseOutput {
 
     private Long id;
-    private LocalDate PurchaseDate;
+    private LocalDate purchaseDate;
+    private LocalDate warrantyDate;
+    private LocalDate reviewDate;
     private User user;
     private Car car;
     

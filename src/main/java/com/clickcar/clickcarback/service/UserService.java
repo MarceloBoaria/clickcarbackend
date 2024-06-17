@@ -8,6 +8,10 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +22,7 @@ import com.clickcar.clickcarback.entities.User;
 import com.clickcar.clickcarback.repositories.UserRepository;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private CarService carService;
@@ -80,8 +84,19 @@ public class UserService {
 
     private User convertInputToUser(UserInput input) {
 
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(input, User.class);
+        User user = new User();
+
+        user.setName(input.getName());
+        user.setEmail(input.getEmail());
+        user.setCpf(input.getCpf());
+        user.setPhone(input.getPhone());
+        // Criptografar a senha, tanto no update, quanto no create!
+        var senhaCriptografada = new BCryptPasswordEncoder().encode(input.getPassword());
+        user.setPassword(senhaCriptografada);
+        return user;
+
+        // ModelMapper modelMapper = new ModelMapper();
+        // return modelMapper.map(input, User.class);
 
     }
 
@@ -93,6 +108,22 @@ public class UserService {
 
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(user, UserOutput.class);
+
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {
+        
+        User user = repository.findByCpf(cpf);
+
+        if(user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return org.springframework.security.core.userdetails.User
+            .builder()
+            .username(cpf)
+            .password(user.getPassword())
+            .build();
 
     }
 

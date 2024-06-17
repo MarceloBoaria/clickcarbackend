@@ -1,6 +1,11 @@
 package com.clickcar.clickcarback.entities;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +20,7 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 @Entity
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +31,7 @@ public class User {
     private String cpf;
     private String phone;
     private String password;
-    private Boolean isAdmin;
+    private Boolean isAdmin = false;
 
     @OneToOne(optional = true)
     private Address address;
@@ -34,5 +39,44 @@ public class User {
     private Photograph photograph;
     @ManyToMany
     private List<Car> favorits;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(isAdmin) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+    }
+
+    @Override
+    public String getUsername() {
+        return cpf;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
     
 }

@@ -17,6 +17,7 @@ import com.clickcar.clickcarback.dtos.purchases.PurchaseOutput;
 import com.clickcar.clickcarback.entities.Car;
 import com.clickcar.clickcarback.entities.Purchase;
 import com.clickcar.clickcarback.entities.User;
+import com.clickcar.clickcarback.entities.enums.Category;
 import com.clickcar.clickcarback.repositories.CarRepository;
 import com.clickcar.clickcarback.repositories.PurchaseRepository;
 import com.clickcar.clickcarback.repositories.UserRepository;
@@ -92,7 +93,30 @@ public class PurchaseService {
         }
 
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(purchase, PurchaseOutput.class);
+        var purchaseMapped = modelMapper.map(purchase, PurchaseOutput.class);
+        purchaseMapped.setWarrantyDate(calculateWarrantyDate(purchaseMapped));
+        purchaseMapped.setReviewDate(calculateReviewDate(purchaseMapped));
+        return purchaseMapped;
+
+    }
+
+    private LocalDate calculateWarrantyDate(PurchaseOutput purchase) {
+
+        if (purchase.getCar().getCategory() == Category.SEMINEW) {
+            return purchase.getPurchaseDate().plusMonths(6);
+        } else {
+            return purchase.getPurchaseDate().plusMonths(12);
+        }
+
+    }
+
+    private LocalDate calculateReviewDate(PurchaseOutput purchase) {
+
+        if (purchase.getCar().getCategory() == Category.SEMINEW) {
+            return purchase.getPurchaseDate().plusMonths(6);
+        } else {
+            return purchase.getPurchaseDate().plusMonths(12);
+        }
 
     }
     
