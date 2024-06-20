@@ -1,10 +1,12 @@
 package com.clickcar.clickcarback;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,12 +64,18 @@ public class TestPurchaseService {
 
         PurchaseOutput expected = new PurchaseOutput();
         expected.setId(1L);
+        expected.setReviewDate(localDateNow.plusMonths(6));
+        expected.setWarrantyDate(localDateNow.plusMonths(6));
         expected.setPurchaseDate(localDateNow);
         expected.setUser(user);
         expected.setCar(car);
 
         when(userRepository.existsById(1L)).thenReturn(true);
         when(carRepository.existsById(1L)).thenReturn(true);
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(carRepository.findById(1L)).thenReturn(Optional.of(car));
+
         when(repository.save(any())).thenReturn(purchase);
 
         var result = service.create(purchaseInput);
@@ -90,29 +98,21 @@ public class TestPurchaseService {
         input.setUserId(1L);
         input.setCarId(1L);
 
-        Purchase expected = new Purchase();
-        expected.setId(1L);
-        expected.setUser(user);
-        expected.setCar(car);
-        expected.setPurchaseDate(localDateNow);
+        Purchase purchase = new Purchase();
+        purchase.setId(1L);
+        purchase.setPurchaseDate(localDateNow);
+        purchase.setUser(user);
+        purchase.setCar(car);
 
-        // private Purchase convertInputToPurchase(PurchaseInput input) {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        when(carRepository.findById(1L)).thenReturn(Optional.of(car));
 
-        //     Long userId = input.getUserId();
-        //     Long carId = input.getCarId();
-    
-        //     Purchase purchase = new Purchase();
-    
-        //     User user = userRepository.findById(userId).get();
-        //     purchase.setUser(user);
-    
-        //     Car car = carRepository.findById(carId).get();
-        //     purchase.setCar(car);
-    
-        //     purchase.setPurchaseDate(LocalDate.now());
-    
-        //     return purchase;
-        // }
+        Purchase expected = service.convertInputToPurchase(input);
+
+        assertNotNull(expected);
+        assertEquals(purchase.getUser().getId(), expected.getUser().getId());
+        assertEquals(purchase.getCar().getId(), expected.getCar().getId());
+        assertEquals(purchase.getPurchaseDate(), expected.getPurchaseDate());
 
     }
     

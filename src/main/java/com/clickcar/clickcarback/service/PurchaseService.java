@@ -68,7 +68,7 @@ public class PurchaseService {
         repository.deleteById(id);
     }
 
-    private Purchase convertInputToPurchase(PurchaseInput input) {
+    public Purchase convertInputToPurchase(PurchaseInput input) {
 
         Long userId = input.getUserId();
         Long carId = input.getCarId();
