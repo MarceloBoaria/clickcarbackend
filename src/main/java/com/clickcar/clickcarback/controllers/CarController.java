@@ -3,9 +3,12 @@ package com.clickcar.clickcarback.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.clickcar.clickcarback.dtos.cars.CarInput;
 import com.clickcar.clickcarback.dtos.cars.CarOutput;
@@ -69,6 +74,31 @@ public class CarController {
         service.delete(id);
         // return new ResponseEntity(HttpStatus.NO_CONTENT);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/photo")
+    public ResponseEntity<?> uploadImage(@PathVariable Long id, @RequestParam MultipartFile image) {
+      String message = "";
+      try {
+          service.upload(id, image);
+        message = "Uploaded the image successfully: " + image.getOriginalFilename();
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+      } catch (Exception e) {
+        message =
+          "Could not upload the image: " +
+          image.getOriginalFilename() +
+          ". Error: " +
+          e.getMessage();
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+      }
+    }
+  
+    @GetMapping("/{id}/photo")
+    public ResponseEntity<Resource> getImage(@PathVariable Long id) {
+      Resource image = service.getFoto(id);
+      
+      return ResponseEntity.ok()
+          .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + image.getFilename() + "\"").body(image);
     }
 
     /*

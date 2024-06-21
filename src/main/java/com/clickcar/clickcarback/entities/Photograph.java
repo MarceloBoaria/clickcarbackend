@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Photograph {
 
+    public Photograph(String image) {
+        this.image = image;
+    }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

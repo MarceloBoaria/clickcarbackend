@@ -2,27 +2,34 @@ package com.clickcar.clickcarback.service;
 
 import java.time.Instant;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.clickcar.clickcarback.dtos.token.LoginOutpu;
 import com.clickcar.clickcarback.entities.User;
+import com.clickcar.clickcarback.repositories.UserRepository;
 
 @Service
 public class TokenService {
+
+    @Autowired
+    private UserRepository repository;
 
     private String secret = "SECRET_TOKEN";
     private Integer expiration = 30;
     private String issuer = "clickcar"; // Nome do projeto
 
-    public LoginOutpu createToken(User user) {
+    public LoginOutpu createToken(UserDetails userDetails) {
         var algoritmo = Algorithm.HMAC256(secret);
         var token = JWT.create()
                 .withIssuer(issuer)
-                .withSubject(user.getUsername())
+                .withSubject(userDetails.getUsername())
                 .withExpiresAt(getExpiration())
                 .sign(algoritmo);
+        var user = repository.findByCpf(userDetails.getUsername());
         return convertOutput(token, user);
     }
 

@@ -45,8 +45,7 @@ public class SecurityConfig {
         builder.userDetailsService(userService).passwordEncoder(getPasswordEncoder());
         var authentication = builder.build();
         
-        http.cors(cors -> cors.disable())
-            .csrf(csrf -> csrf.disable())
+        http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(request ->
                 request
                 .requestMatchers(HttpMethod.POST, "users")

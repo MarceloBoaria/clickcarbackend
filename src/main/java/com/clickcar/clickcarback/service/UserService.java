@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
@@ -14,10 +15,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.clickcar.clickcarback.dtos.cars.CarOutput;
 import com.clickcar.clickcarback.dtos.users.UserInput;
 import com.clickcar.clickcarback.dtos.users.UserOutput;
+import com.clickcar.clickcarback.entities.Photograph;
 import com.clickcar.clickcarback.entities.User;
 import com.clickcar.clickcarback.repositories.UserRepository;
 
@@ -29,6 +32,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private FilesStorageServiceImp storageService;
 
     @Transactional
     public UserOutput create(UserInput input) {
@@ -80,6 +86,27 @@ public class UserService implements UserDetailsService {
         } else {
             return null;
         }
+    }
+
+    public void upload(Long id, MultipartFile image) {
+        if (repository.existsById(id)) {
+            var filename = storageService.save(image);
+            var foto = new Photograph(filename);
+            var user = repository.findById(id).get();
+            user.setPhotograph(foto);
+            repository.save(user);
+        }
+    }
+
+    public Resource getFoto(Long id) { 
+        if(repository.existsById(id)) {
+            var user = repository.findById(id).get();
+            if (user.getPhotograph() != null) {
+                return storageService.load(user.getPhotograph().getImage());
+            }
+            return null;
+        }
+        return null;
     }
 
     private User convertInputToUser(UserInput input) {

@@ -4,16 +4,19 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.clickcar.clickcarback.dtos.cars.CarInput;
 import com.clickcar.clickcarback.dtos.cars.CarOutput;
 import com.clickcar.clickcarback.entities.Car;
+import com.clickcar.clickcarback.entities.Photograph;
 import com.clickcar.clickcarback.repositories.CarRepository;
 
 @Service
@@ -21,6 +24,9 @@ public class CarService {
 
     @Autowired
     private CarRepository repository;
+
+    @Autowired
+    private FilesStorageServiceImp storageService;
 
     @Transactional
     public CarOutput create(CarInput input) {
@@ -64,6 +70,27 @@ public class CarService {
         } else {
             return null;
         }
+    }
+
+    public void upload(Long id, MultipartFile image) {
+        if (repository.existsById(id)) {
+            var filename = storageService.save(image);
+            var foto = new Photograph(filename);
+            var car = repository.findById(id).get();
+            car.setPhotograph(foto);
+            repository.save(car);
+        }
+    }
+
+    public Resource getFoto(Long id) { 
+        if(repository.existsById(id)) {
+            var car = repository.findById(id).get();
+            if (car.getPhotograph() != null) {
+                return storageService.load(car.getPhotograph().getImage());
+            }
+            return null;
+        }
+        return null;
     }
 
     private Car convertInputToCar(CarInput input) {
