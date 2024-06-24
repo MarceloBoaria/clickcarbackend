@@ -24,5 +24,6 @@ public class UserInput {
     private String phone;
     @NotEmpty @Size(min = 6)
     private String password;
+    private Boolean isAdmin;
     
 }

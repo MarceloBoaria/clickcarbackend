@@ -120,6 +120,7 @@ public class UserService implements UserDetailsService {
         // Criptografar a senha, tanto no update, quanto no create!
         var senhaCriptografada = new BCryptPasswordEncoder().encode(input.getPassword());
         user.setPassword(senhaCriptografada);
+        user.setIsAdmin(input.getIsAdmin());
         return user;
 
         // ModelMapper modelMapper = new ModelMapper();
