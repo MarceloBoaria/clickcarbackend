@@ -1,7 +1,5 @@
 package com.clickcar.clickcarback.dtos.cars;
 
-import java.time.LocalDate;
-
 import com.clickcar.clickcarback.entities.enums.Category;
 import com.clickcar.clickcarback.entities.enums.Color;
 import com.clickcar.clickcarback.entities.enums.Direction;

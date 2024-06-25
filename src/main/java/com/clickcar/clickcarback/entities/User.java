@@ -34,8 +34,6 @@ public class User implements UserDetails {
     private Boolean isAdmin = false;
 
     @OneToOne(optional = true)
-    private Address address;
-    @OneToOne(optional = true)
     private Photograph photograph;
     @ManyToMany
     private List<Car> favorits;
