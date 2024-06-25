@@ -108,7 +108,9 @@ public class CarService {
 
         ModelMapper modelMapper = new ModelMapper();
         var carMapped = modelMapper.map(car, CarOutput.class);
+        if(car.getUsersFavorits() != null) {
         carMapped.setFavoritsNumber(car.getUsersFavorits().size());
+        }
         return carMapped;
 
     }

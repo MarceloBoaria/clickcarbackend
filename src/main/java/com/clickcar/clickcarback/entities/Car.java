@@ -28,17 +28,17 @@ public class Car {
     private Long id;
     private String model;
     private String brand;
-    private Integer yearManufacture;
-    private Float mileage;
-    private Integer doors;
-    private Boolean eletricGlass;
-    private Boolean alarm;
-    private Boolean absBrake;
-    private Boolean sunroof;
-    private Float price;
-    private Boolean eletricLock;
-    private Boolean airbag;
-    private Boolean airConditioning;
+    private String yearManufacture;
+    private String mileage;
+    private String doors;
+    private String eletricGlass;
+    private String alarm;
+    private String absBrake;
+    private String sunroof;
+    private String price;
+    private String eletricLock;
+    private String airbag;
+    private String airConditioning;
     @Enumerated(EnumType.STRING)
     private Color color;
     @Enumerated(EnumType.STRING)

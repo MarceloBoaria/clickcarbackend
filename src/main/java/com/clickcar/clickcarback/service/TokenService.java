@@ -19,7 +19,7 @@ public class TokenService {
     private UserRepository repository;
 
     private String secret = "SECRET_TOKEN";
-    private Integer expiration = 30;
+    private Integer expiration = 1800;
     private String issuer = "clickcar"; // Nome do projeto
 
     public LoginOutpu createToken(UserDetails userDetails) {

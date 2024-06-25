@@ -14,27 +14,27 @@ public class CarInput {
     @NotNull
     private String brand;
     @NotNull
-    private Integer yearManufacture;
+    private String yearManufacture;
     @NotNull
-    private Float mileage;
+    private String mileage;
     @NotNull
-    private Integer doors;
+    private String doors;
     @NotNull
-    private Boolean eletricGlass;
+    private String eletricGlass;
     @NotNull
-    private Boolean alarm;
+    private String alarm;
     @NotNull
-    private Boolean absBrake;
+    private String absBrake;
     @NotNull
-    private Boolean sunroof;
+    private String sunroof;
     @NotNull
-    private Float price;
+    private String price;
     @NotNull
-    private Boolean eletricLock;
+    private String eletricLock;
     @NotNull
-    private Boolean airbag;
+    private String airbag;
     @NotNull
-    private Boolean airConditioning;
+    private String airConditioning;
     @NotNull
     private String color;
     @NotNull
